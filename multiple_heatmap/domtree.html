@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>DOM Tree Only</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header>
+      <h1>DOM Tree Only</h1>
+      <p>
+        This page displays the DOM tree (with scores) of the previously selected
+        page.
+      </p>
+    </header>
+
+    <!-- Container for the DOM tree -->
+    <div id="tree-container"></div>
+
+    <script>
+      // On page load, retrieve the stored DOM tree snapshot (HTML and scores)
+      const storedData = localStorage.getItem("selectedDomTree");
+      const container = document.getElementById("tree-container");
+      if (storedData) {
+        try {
+          const parsedData = JSON.parse(storedData);
+          container.innerHTML = parsedData.html;
+          // Update the score fields using the stored scores.
+          for (const id in parsedData.scores) {
+            const heatElem = container.querySelector(
+              `[data-score-heat="${id}"]`
+            );
+            if (heatElem) {
+              heatElem.textContent = `Heat Score: ${parsedData.scores[id].heat}`;
+            }
+            const clickElem = container.querySelector(
+              `[data-score-click="${id}"]`
+            );
+            if (clickElem) {
+              clickElem.textContent = `Click Score: ${parsedData.scores[id].click}`;
+            }
+          }
+        } catch (e) {
+          container.textContent = "Error reading DOM tree data.";
+          console.error(e);
+        }
+      } else {
+        container.textContent = "No DOM tree data available.";
+      }
+    </script>
+  </body>
+</html>

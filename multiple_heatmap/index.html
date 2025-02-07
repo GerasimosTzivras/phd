@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Complex UI Dashboard with Persistent & Aggregated Heatmap</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="container">
+      <!-- The heatmap canvas (always on top but non-interactive) -->
+      <canvas id="heatmapCanvas"></canvas>
+
+      <!-- Header -->
+      <header>
+        <h1>Complex UI Dashboard</h1>
+        <p>Explore interactive elements while tracking your mouse activity.</p>
+        <!-- Button to capture and download the screenshot of the current page -->
+        <button id="downloadBtn">Download Screenshot</button>
+        <!-- Button to download an aggregated (summed) heatmap across pages -->
+        <button id="downloadCombinedBtn">Download Combined Heatmap</button>
+        <!-- NEW: Button to view the DOM tree on a separate page -->
+        <button id="view-tree-only-btn">View DOM Tree Only</button>
+      </header>
+
+      <!-- Navigation Sidebar -->
+      <nav>
+        <ul>
+          <li><a href="index.html">Dashboard</a></li>
+          <li><a href="reports.html">Reports</a></li>
+          <li><a href="analytics.html">Analytics</a></li>
+          <li><a href="users.html">Users</a></li>
+          <li><a href="settings.html">Settings</a></li>
+        </ul>
+      </nav>
+
+      <!-- Main Content -->
+      <main>
+        <!-- Welcome Card -->
+        <section class="card">
+          <h2>Welcome to Your Dashboard</h2>
+          <p>
+            This dashboard is designed to show you a variety of UI elements
+            including charts, tables, forms, and more. As you move your mouse
+            around, the heatmap overlay will show the intensity of your
+            interactions—changing from yellow to orange to red based on repeated
+            passes.
+          </p>
+        </section>
+
+        <!-- Statistics Card with Table -->
+        <section class="card">
+          <h3>Statistics</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Metric</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Total Visits</td>
+                <td>1,024</td>
+              </tr>
+              <tr>
+                <td>Clicks</td>
+                <td>350</td>
+              </tr>
+              <tr>
+                <td>Conversions</td>
+                <td>76</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Feedback Form Card -->
+        <section class="card">
+          <h3>User Feedback</h3>
+          <form>
+            <div class="form-group">
+              <label for="feedback">Your Feedback:</label>
+              <textarea
+                id="feedback"
+                rows="4"
+                placeholder="Enter your feedback here..."
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="rating">Rating:</label>
+              <select id="rating">
+                <option value="1">1 - Poor</option>
+                <option value="2">2 - Fair</option>
+                <option value="3">3 - Good</option>
+                <option value="4">4 - Very Good</option>
+                <option value="5">5 - Excellent</option>
+              </select>
+            </div>
+            <button type="submit">Submit Feedback</button>
+          </form>
+        </section>
+
+        <!-- News Card -->
+        <section class="card">
+          <h3>Latest News</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
+            vel sapien ac velit dictum commodo. Cras non dui at libero placerat
+            aliquet. In hac habitasse platea dictumst.
+          </p>
+        </section>
+
+        <!-- Gallery Card -->
+        <section class="card">
+          <h3>Gallery</h3>
+          <img
+            src="https://via.placeholder.com/600x300"
+            alt="Sample Gallery Image"
+          />
+          <p>Sample image from the gallery section.</p>
+        </section>
+
+        <!-- Additional content to make the page scrollable -->
+        <section class="card">
+          <h3>More Content</h3>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec
+            odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla
+            quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
+          </p>
+          <p>
+            Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris
+            massa. Vestibulum lacinia arcu eget nulla. Class aptent taciti
+            sociosqu ad litora torquent per conubia nostra, per inceptos
+            himenaeos.
+          </p>
+          <p>
+            Curabitur sodales ligula in libero. Sed dignissim lacinia nunc.
+            Curabitur tortor. Pellentesque nibh. Aenean quam. In scelerisque sem
+            at dolor. Maecenas mattis.
+          </p>
+        </section>
+
+        <!-- Heatmap Controls Card -->
+        <section class="card" id="heatmap-controls">
+          <h3>Heatmap Controls</h3>
+          <label>
+            <input type="checkbox" id="toggle-heatmap" checked />
+            Show Heatmap Overlay
+          </label>
+          <br /><br />
+          <button id="clear-heatmap">Clear Heatmap Data</button>
+          <br /><br />
+          <label for="maxIntensitySlider"
+            >Max Intensity: <span id="maxIntensityValue">10</span></label
+          >
+          <input
+            type="range"
+            id="maxIntensitySlider"
+            min="5"
+            max="20"
+            value="10"
+          />
+          <br /><br />
+          <label for="kernelRadiusSlider"
+            >Kernel Radius: <span id="kernelRadiusValue">2</span></label
+          >
+          <input
+            type="range"
+            id="kernelRadiusSlider"
+            min="1"
+            max="5"
+            value="2"
+          />
+          <br /><br />
+          <label for="gridSizeSlider"
+            >Grid Size: <span id="gridSizeValue">10</span> px</label
+          >
+          <input type="range" id="gridSizeSlider" min="5" max="20" value="10" />
+          <br /><br />
+          <!-- Button to simulate very high heat -->
+          <button id="simulateHighHeat">Simulate High Heat</button>
+        </section>
+
+        <!-- Heatmap Statistics Card -->
+        <section class="card" id="heatmap-stats">
+          <h3>Heatmap Statistics</h3>
+          <p>Total Heat: <span id="totalHeat">0</span></p>
+          <p>Average Intensity: <span id="avgIntensity">0</span></p>
+          <p>Max Recorded Intensity: <span id="maxRecorded">0</span></p>
+        </section>
+      </main>
+
+      <!-- Footer -->
+      <footer>
+        <p>&copy; 2025 Complex UI Dashboard. All rights reserved.</p>
+      </footer>
+    </div>
+
+    <!-- Note: No DOM tree container is drawn here in index.html -->
+
+    <!-- Include html2canvas library from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
